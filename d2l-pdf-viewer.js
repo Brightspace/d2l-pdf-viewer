@@ -4,8 +4,9 @@ import 'fullscreen-api/fullscreen-api.js';
 import './d2l-pdf-viewer-toolbar.js';
 import './d2l-pdf-viewer-progress-bar.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import 'pdfjs-dist/build/pdf.min.js';
-import 'pdfjs-dist/web/pdf_viewer.js';
+import pdf, { LinkTarget } from 'pdfjs-dist-modules/pdf.js';
+import { PDFLinkService } from 'pdfjs-dist-modules/pdf_link_service.js';
+import { PDFViewer } from 'pdfjs-dist-modules/pdf_viewer.js';
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer">
@@ -454,11 +455,10 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer">
 			<div id="viewer" class="pdfViewer" tabindex="0"></div>
 		</div>
 	</template>
-	
+
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
-/* global pdfjsViewer, pdfjsLib */
 
 /**
  * `<d2l-pdf-viewer>`
@@ -540,18 +540,18 @@ Polymer({
 		// under Shady DOM
 		this.scopeSubtree(this.$.viewerContainer, true);
 
-		pdfjsLib.GlobalWorkerOptions.workerSrc =
-			this.pdfJsWorkerSrc ||
-			this.importPath + '../pdfjs-dist/build/pdf.worker.min.js';
+		pdf.GlobalWorkerOptions.workerSrc =
+			this.pdfJsWorkerSrc || import.meta.url + '/../node_modules/pdfjs-dist-modules/pdf.worker.min.js';
 
 		// (Optionally) enable hyperlinks within PDF files.
-		this._pdfLinkService = new pdfjsViewer.PDFLinkService({
-			externalLinkTarget: pdfjsLib.LinkTarget.BLANK
+		this._pdfLinkService = new PDFLinkService({
+			externalLinkTarget: LinkTarget.BLANK
 		});
 
-		this._pdfViewer = new pdfjsViewer.PDFViewer({
+		this._pdfViewer = new PDFViewer({
 			container: this.$.viewerContainer,
-			linkService: this._pdfLinkService
+			linkService: this._pdfLinkService,
+			useOnlyCssZoom: true, // Use CSS zooming only, as default zoom rendering in (modularized?) pdfjs-dist is buggy
 		});
 
 		this._pdfLinkService.setViewer(this._pdfViewer);
@@ -640,7 +640,7 @@ Polymer({
 		this._setPdfNameFromUrl(src);
 
 		destroyLoadingTask.then(() => {
-			const loadingTask = this._loadingTask = pdfjsLib.getDocument({
+			const loadingTask = this._loadingTask = pdf.getDocument({
 				url: src
 			});
 

@@ -15,15 +15,7 @@
 		</test-fixture>
 		<script type="module">
 import '../d2l-pdf-viewer.js';
-class PdfjsMock {
-	constructor(config = {}) {
-		this.__config = config;
-	}
-
-	getDocument(opts) {
-		return this.__config.loadingTasks[opts.url];
-	}
-}
+import pdf from 'pdfjs-dist-modules/pdf.js';
 
 class LoadingTaskMock {
 	constructor(config = {}) {
@@ -42,27 +34,20 @@ class LoadingTaskMock {
 
 describe('<d2l-pdf-viewer>', function() {
 	let pdfViewer;
-	let pdfJsReal;
 
 	describe('loading', function() {
 		beforeEach(function() {
 			pdfViewer = fixture('basic');
-
-			pdfJsReal = pdfJsReal || window.pdfjsLib;
 		});
 
 		afterEach(function() {
-			window.pdfjsLib = pdfJsReal;
+			sinon.sandbox.restore();
 		});
 
 		it('should report the determinate progress when available', function(done) {
 			const loadingTaskMock = new LoadingTaskMock();
 
-			window.pdfjsLib = new PdfjsMock({
-				loadingTasks: {
-					'https://some.dummy.url/and-a-fake.pdf': loadingTaskMock
-				}
-			});
+			sinon.sandbox.stub(pdf, 'getDocument', () => loadingTaskMock);
 
 			pdfViewer.src = 'https://some.dummy.url/and-a-fake.pdf';
 
@@ -83,11 +68,7 @@ describe('<d2l-pdf-viewer>', function() {
 		it('should use an indeterminate loading bar when total progress not available', function(done) {
 			const loadingTaskMock = new LoadingTaskMock();
 
-			window.pdfjsLib = new PdfjsMock({
-				loadingTasks: {
-					'https://some.dummy.url/and-a-fake.pdf': loadingTaskMock
-				}
-			});
+			sinon.sandbox.stub(pdf, 'getDocument', () => loadingTaskMock);
 
 			pdfViewer.src = 'https://some.dummy.url/and-a-fake.pdf';
 
