@@ -1,9 +1,10 @@
 import '@polymer/polymer/polymer-legacy.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import 'd2l-colors/d2l-colors.js';
 import 'fullscreen-api/fullscreen-api.js';
-import './d2l-pdf-viewer-toolbar.js';
 import './d2l-pdf-viewer-progress-bar.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import './d2l-pdf-viewer-toolbar.js';
+
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer">
@@ -442,11 +443,24 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer">
 
 		<span id="pdfName" hidden="">[[_pdfName]]</span>
 
-		<fullscreen-api id="fsApi" target="[[_getFullscreenTarget()]]" fullscreen="{{_isFullscreen}}" fullscreen-available="{{_isFullscreenAvailable}}">
+		<fullscreen-api
+			id="fsApi"
+			target="[[_getFullscreenTarget()]]"
+			fullscreen="{{_isFullscreen}}"
+			fullscreen-available="{{_isFullscreenAvailable}}">
 		</fullscreen-api>
 
 		<d2l-pdf-viewer-progress-bar id="progressBar"></d2l-pdf-viewer-progress-bar>
-		<d2l-pdf-viewer-toolbar id="toolbar" page-number="[[_pageNumber]]" pages-count="[[_pagesCount]]" page-scale="[[_pageScale]]" min-page-scale="[[minPageScale]]" max-page-scale="[[maxPageScale]]" fullscreen-available="[[_isFullscreenAvailable]]" is-fullscreen="[[_isFullscreen]]" show$="[[_showToolbar]]">
+		<d2l-pdf-viewer-toolbar
+			id="toolbar"
+			page-number="[[_pageNumber]]"
+			pages-count="[[_pagesCount]]"
+			page-scale="[[_pageScale]]"
+			min-page-scale="[[minPageScale]]"
+			max-page-scale="[[maxPageScale]]"
+			fullscreen-available="[[_isFullscreenAvailable]]"
+			is-fullscreen="[[_isFullscreen]]"
+			show$="[[_showToolbar]]">
 		</d2l-pdf-viewer-toolbar>
 		<div id="viewerContainer">
 			<div id="viewer" class="pdfViewer" tabindex="0"></div>
