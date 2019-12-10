@@ -496,6 +496,9 @@ Polymer({
 		pdfJsWorkerSrc: {
 			type: String
 		},
+		pdfJsRemotePath: {
+			type: String
+		},
 		src: {
 			type: String
 		},
@@ -549,11 +552,13 @@ Polymer({
 	ready: function() {
 		this._boundListeners = false;
 		this._addedEventListeners = false;
+
+		const importPath = this.pdfJsRemotePath || 'pdfjs-dist-modules';
 		// Import pdfjs separately to allow better code splitting
 		this._initializeTask = Promise.all([
-			import('pdfjs-dist-modules/pdf.js'),
-			import('pdfjs-dist-modules/pdf_link_service.js'),
-			import('pdfjs-dist-modules/pdf_viewer.js')
+			import(`${importPath}/pdf.js`),
+			import(`${importPath}/pdf_link_service.js`),
+			import(`${importPath}/pdf_viewer.js`)
 		])
 			.then(([pdfImport, pdfLinkServiceImport, pdfViewerImport]) => {
 				const pdf = pdfImport.default;
@@ -566,8 +571,11 @@ Polymer({
 				// under Shady DOM
 				this.scopeSubtree(this.$.viewerContainer, true);
 
-				pdf.GlobalWorkerOptions.workerSrc =
-					this.pdfJsWorkerSrc || import.meta.url + '/../node_modules/pdfjs-dist-modules/pdf.worker.min.js';
+				const workerSrc = this.pdfJsRemotePath
+					? `${this.pdfJsRemotePath}/pdf.worker.min.js`
+					: this.pdfJsWorkerSrc || `${import.meta.url}/../node_modules/pdfjs-dist-modules/pdf.worker.min.js`;
+
+				pdf.GlobalWorkerOptions.workerSrc = workerSrc;
 
 				// (Optionally) enable hyperlinks within PDF files.
 				this._pdfLinkService = new PDFLinkService({
