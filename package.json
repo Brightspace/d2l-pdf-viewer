@@ -25,7 +25,8 @@
     "eslint-config-brightspace": "^0.4.0",
     "eslint-plugin-html": "^4.0.5",
     "polymer-cli": "^1.9.6",
-    "wct-browser-legacy": "^1.0.1"
+    "wct-browser-legacy": "^1.0.1",
+    "pdfjs-dist-modules": "Brightspace/pdfjs-dist-modules#semver:2.0.943"
   },
   "version": "2.0.0",
   "resolutions": {
@@ -43,7 +44,9 @@
     "d2l-polymer-behaviors": "Brightspace/d2l-polymer-behaviors-ui#semver:^2",
     "d2l-typography": "BrightspaceUI/typography#semver:^7",
     "fastdom": "^1.0.8",
-    "fullscreen-api": "Brightspace/fullscreen-api#semver:^3",
-    "pdfjs-dist-modules": "github:Brightspace/pdfjs-dist-modules#semver:2.0.943"
+    "fullscreen-api": "Brightspace/fullscreen-api#semver:^3"
+  },
+  "peerDependencies": {
+    "pdfjs-dist-modules": "Brightspace/pdfjs-dist-modules#semver:2.0.943"
   }
 }
