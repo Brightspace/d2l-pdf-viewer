@@ -1,3 +1,5 @@
+/* global pdfjsViewer pdfjsLib */
+
 import '@polymer/polymer/polymer-legacy.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import 'd2l-colors/d2l-colors.js';
@@ -496,9 +498,6 @@ Polymer({
 		pdfJsWorkerSrc: {
 			type: String
 		},
-		pdfJsRemotePath: {
-			type: String
-		},
 		src: {
 			type: String
 		},
@@ -547,56 +546,55 @@ Polymer({
 		'd2l-pdf-viewer-button-interaction': '_onInteraction'
 	},
 	observers: [
-		'_srcChanged(isAttached, src)'
+		'_srcChanged(isAttached, src)',
+		'_librariesLoaded(_pdfJsLoaded, _pdfViewerLoaded)'
 	],
 	ready: function() {
 		this._boundListeners = false;
 		this._addedEventListeners = false;
 
-		const importPath = this.pdfJsRemotePath || 'pdfjs-dist-modules';
-		// Import pdfjs separately to allow better code splitting
 		this._initializeTask = Promise.all([
-			import(`${importPath}/pdf.js`),
-			import(`${importPath}/pdf_link_service.js`),
-			import(`${importPath}/pdf_viewer.js`)
+			this._loadScript('https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.min.js'),
+			this._loadScript('https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/web/pdf_viewer.js')
 		])
-			.then(([pdfImport, pdfLinkServiceImport, pdfViewerImport]) => {
-				const pdf = pdfImport.default;
-				const { LinkTarget } = pdfImport;
-				const { PDFLinkService } = pdfLinkServiceImport;
-				const { PDFViewer } = pdfViewerImport;
+			.then(this._librariesLoaded.bind(this));
+	},
+	_loadScript: function(src) {
+		const scriptTag = document.createElement('script');
+		document.head.appendChild(scriptTag);
+		return new Promise(resolve => {
+			scriptTag.onload = resolve;
+			scriptTag.src = src;
+		});
+	},
+	_librariesLoaded: function() {
+		// Ensure that style scoping is applied to elements added by PDF.js
+		// under Shady DOM
+		this.scopeSubtree(this.$.viewerContainer, true);
 
-				this._pdf = pdf;
-				// Ensure that style scoping is applied to elements added by PDF.js
-				// under Shady DOM
-				this.scopeSubtree(this.$.viewerContainer, true);
+		pdfjsLib.GlobalWorkerOptions.workerSrc =
+			this.pdfJsWorkerSrc ||
+			'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.worker.min.js';
 
-				const workerSrc = this.pdfJsRemotePath
-					? `${this.pdfJsRemotePath}/pdf.worker.min.js`
-					: this.pdfJsWorkerSrc || `${import.meta.url}/../node_modules/pdfjs-dist-modules/pdf.worker.min.js`;
+		// (Optionally) enable hyperlinks within PDF files.
+		this._pdfLinkService = new pdfjsViewer.PDFLinkService({
+			externalLinkTarget: pdfjsLib.LinkTarget.BLANK
+		});
 
-				pdf.GlobalWorkerOptions.workerSrc = workerSrc;
+		this._pdfViewer = new pdfjsViewer.PDFViewer({
+			container: this.$.viewerContainer,
+			linkService: this._pdfLinkService,
+			useOnlyCssZoom: true, // Use CSS zooming only, as default zoom rendering in (modularized?) pdfjs-dist is buggy
+		});
 
-				// (Optionally) enable hyperlinks within PDF files.
-				this._pdfLinkService = new PDFLinkService({
-					externalLinkTarget: LinkTarget.BLANK
-				});
+		this._pdfLinkService.setViewer(this._pdfViewer);
 
-				this._pdfViewer = new PDFViewer({
-					container: this.$.viewerContainer,
-					linkService: this._pdfLinkService,
-					useOnlyCssZoom: true, // Use CSS zooming only, as default zoom rendering in (modularized?) pdfjs-dist is buggy
-				});
+		// Add event listeners before loading document
+		this._addEventListeners();
 
-				this._pdfLinkService.setViewer(this._pdfViewer);
-
-				// Add event listeners before loading document
-				this._addEventListeners();
-
-				this.dispatchEvent(new CustomEvent('d2l-pdf-viewer-initialized', {
-					bubbles: true,
-				}));
-			});
+		this.dispatchEvent(new CustomEvent('d2l-pdf-viewer-initialized', {
+			bubbles: true,
+		}));
 	},
 	attached: function() {
 		this._addEventListeners();
@@ -702,7 +700,7 @@ Polymer({
 		this._setPdfNameFromUrl(src);
 
 		destroyLoadingTask.then(() => {
-			const loadingTask = this._loadingTask = this._pdf.getDocument({
+			const loadingTask = this._loadingTask = pdfjsLib.getDocument({
 				url: src
 			});
 
