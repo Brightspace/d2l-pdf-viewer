@@ -501,6 +501,10 @@ Polymer({
 		src: {
 			type: String
 		},
+		bundled: {
+			type: Boolean,
+			value: true
+		},
 		_isFullscreen: {
 			type: Boolean,
 			value: false
@@ -546,25 +550,39 @@ Polymer({
 		'd2l-pdf-viewer-button-interaction': '_onInteraction'
 	},
 	observers: [
-		'_srcChanged(isAttached, src)',
-		'_librariesLoaded(_pdfJsLoaded, _pdfViewerLoaded)'
+		'_srcChanged(isAttached, src)'
 	],
 	ready: function() {
 		this._boundListeners = false;
 		this._addedEventListeners = false;
 
-		this._initializeTask = Promise.all([
-			this._loadScript('https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.min.js'),
-			this._loadScript('https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/web/pdf_viewer.js')
-		])
+		const initializeTask = this.bundled
+			? Promise.all([
+				import('pdfjs-dist-modules/pdf.js'),
+				import('pdfjs-dist-modules/pdf_link_service.js'),
+				import('pdfjs-dist-modules/pdf_viewer.js')
+			]) : this._loadScript('https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.min.js')
+				.then(this._loadScript.bind(this, 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/web/pdf_viewer.js'));
+
+		this._initializeTask = initializeTask
 			.then(this._librariesLoaded.bind(this));
 	},
 	_loadScript: function(src) {
 		const scriptTag = document.createElement('script');
+		scriptTag.async = false;
 		document.head.appendChild(scriptTag);
-		return new Promise(resolve => {
+		return new Promise((resolve, reject) => {
 			scriptTag.onload = resolve;
+			scriptTag.onerror = reject;
 			scriptTag.src = src;
+		}).catch(() => {
+			const progressBar = this.$.progressBar;
+			progressBar.hidden = true;
+
+			this.dispatchEvent(new CustomEvent(
+				'd2l-pdf-viewer-load-failed',
+				{ bubbles: true, composed: true }
+			));
 		});
 	},
 	_librariesLoaded: function() {
