@@ -576,7 +576,7 @@ Polymer({
 			scriptTag.onerror = reject;
 			scriptTag.src = src;
 		}).catch(() => {
-			const progressBar = this.$.progressBar;
+			const progressBar = bundledthis.$.progressBar;
 			progressBar.hidden = true;
 
 			this.dispatchEvent(new CustomEvent(
@@ -590,9 +590,9 @@ Polymer({
 		// under Shady DOM
 		this.scopeSubtree(this.$.viewerContainer, true);
 
-		pdfjsLib.GlobalWorkerOptions.workerSrc =
-			this.pdfJsWorkerSrc ||
-			'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.worker.min.js';
+		pdfjsLib.GlobalWorkerOptions.workerSrc = this.bundled
+			? this.pdfJsWorkerSrc
+			: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.worker.min.js';
 
 		// (Optionally) enable hyperlinks within PDF files.
 		this._pdfLinkService = new pdfjsViewer.PDFLinkService({
