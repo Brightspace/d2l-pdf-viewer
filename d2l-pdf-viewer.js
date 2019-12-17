@@ -598,8 +598,7 @@ Polymer({
 			scriptTag.onerror = reject;
 			scriptTag.src = src;
 		}).catch(() => {
-			const progressBar = this.$.progressBar;
-			progressBar.hidden = true;
+			this.$.progressBar.hidden = true;
 
 			this.dispatchEvent(new CustomEvent(
 				'd2l-pdf-viewer-load-failed',
