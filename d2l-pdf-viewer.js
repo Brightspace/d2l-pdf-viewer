@@ -473,6 +473,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer">
 
 document.head.appendChild($_documentContainer.content);
 
+const CDN_BASE_PATH = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943';
+
 /**
  * `<d2l-pdf-viewer>`
  *
@@ -556,13 +558,33 @@ Polymer({
 		this._boundListeners = false;
 		this._addedEventListeners = false;
 
-		const initializeTask = this.bundled
-			? Promise.all([
+		let initializeTask;
+
+		if (this.bundled) {
+			initializeTask = Promise.all([
 				import('pdfjs-dist-modules/pdf.js'),
 				import('pdfjs-dist-modules/pdf_link_service.js'),
 				import('pdfjs-dist-modules/pdf_viewer.js')
-			]) : this._loadScript('https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.min.js')
-				.then(this._loadScript.bind(this, 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/web/pdf_viewer.js'));
+			]).then(([pdfImport, pdfLinkServiceImport, pdfViewerImport]) => {
+				return {
+					pdfjsLib: pdfImport.default,
+					LinkTarget: pdfImport.LinkTarget,
+					PDFLinkService: pdfLinkServiceImport.PDFLinkService,
+					PDFViewer: pdfViewerImport.PDFViewer
+				};
+			});
+		} else {
+			initializeTask = this._loadScript(`${CDN_BASE_PATH}/build/pdf.min.js`)
+				.then(() => this._loadScript(`${CDN_BASE_PATH}/web/pdf_viewer.js`))
+				.then(() => {
+					return {
+						pdfjsLib: pdfjsLib,
+						LinkTarget: pdfjsLib.LinkTarget,
+						PDFLinkService: pdfjsViewer.PDFLinkService,
+						PDFViewer: pdfjsViewer.PDFViewer,
+					};
+				});
+		}
 
 		this._initializeTask = initializeTask
 			.then(this._librariesLoaded.bind(this));
@@ -585,21 +607,34 @@ Polymer({
 			));
 		});
 	},
-	_librariesLoaded: function() {
+	_librariesLoaded: function({
+		pdfjsLib,
+		LinkTarget,
+		PDFViewer,
+		PDFLinkService,
+	}) {
+		this._pdfJsLib = pdfjsLib;
+
 		// Ensure that style scoping is applied to elements added by PDF.js
 		// under Shady DOM
 		this.scopeSubtree(this.$.viewerContainer, true);
 
-		pdfjsLib.GlobalWorkerOptions.workerSrc = this.bundled
-			? this.pdfJsWorkerSrc
-			: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.worker.min.js';
+		let workerSrc = this.pdfJsWorkerSrc;
+
+		if (!workerSrc) {
+			workerSrc = this.bundled
+				? import.meta.url + '/../node_modules/pdfjs-dist-modules/pdf.worker.min.js'
+				: `${CDN_BASE_PATH}/build/pdf.worker.min.js`;
+		}
+
+		pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
 
 		// (Optionally) enable hyperlinks within PDF files.
-		this._pdfLinkService = new pdfjsViewer.PDFLinkService({
-			externalLinkTarget: pdfjsLib.LinkTarget.BLANK
+		this._pdfLinkService = new PDFLinkService({
+			externalLinkTarget: LinkTarget.BLANK
 		});
 
-		this._pdfViewer = new pdfjsViewer.PDFViewer({
+		this._pdfViewer = new PDFViewer({
 			container: this.$.viewerContainer,
 			linkService: this._pdfLinkService,
 			useOnlyCssZoom: true, // Use CSS zooming only, as default zoom rendering in (modularized?) pdfjs-dist is buggy
@@ -718,7 +753,7 @@ Polymer({
 		this._setPdfNameFromUrl(src);
 
 		destroyLoadingTask.then(() => {
-			const loadingTask = this._loadingTask = pdfjsLib.getDocument({
+			const loadingTask = this._loadingTask = this._pdfJsLib.getDocument({
 				url: src
 			});
 
