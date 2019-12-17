@@ -474,6 +474,10 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer">
 document.head.appendChild($_documentContainer.content);
 
 const CDN_BASE_PATH = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943';
+const ESM_IMPORT = 'esm';
+const ESM_LOCAL_IMPORT_PATH = 'pdfjs-dist-modules';
+const SCRIPT_IMPORT = 'script';
+const SCRIPT_LOCAL_IMPORT_PATH = 'pdfjs-dist';
 
 /**
  * `<d2l-pdf-viewer>`
@@ -503,9 +507,13 @@ Polymer({
 		src: {
 			type: String
 		},
-		bundled: {
+		importMethod: {
+			type: String,
+			value: ESM_IMPORT
+		},
+		fromCdn: {
 			type: Boolean,
-			value: true
+			value: false
 		},
 		_isFullscreen: {
 			type: Boolean,
@@ -558,13 +566,18 @@ Polymer({
 		this._boundListeners = false;
 		this._addedEventListeners = false;
 
-		let initializeTask;
+		let initializeTask, importPath;
 
-		if (this.bundled) {
+		if (this.importMethod === ESM_IMPORT) {
+			// NOTE: cdm esm imports are not supported yet
+			importPath = this.fromCdn
+				? CDN_BASE_PATH
+				: ESM_LOCAL_IMPORT_PATH;
+
 			initializeTask = Promise.all([
-				import('pdfjs-dist-modules/pdf.js'),
-				import('pdfjs-dist-modules/pdf_link_service.js'),
-				import('pdfjs-dist-modules/pdf_viewer.js')
+				import(`${importPath}/pdf.js`),
+				import(`${importPath}/pdf_link_service.js`),
+				import(`${importPath}/pdf_viewer.js`)
 			]).then(([pdfImport, pdfLinkServiceImport, pdfViewerImport]) => {
 				return {
 					pdfjsLib: pdfImport.default,
@@ -573,9 +586,13 @@ Polymer({
 					PDFViewer: pdfViewerImport.PDFViewer
 				};
 			});
-		} else {
-			initializeTask = this._loadScript(`${CDN_BASE_PATH}/build/pdf.min.js`)
-				.then(() => this._loadScript(`${CDN_BASE_PATH}/web/pdf_viewer.js`))
+		} else if (this.importMethod === SCRIPT_IMPORT) {
+			importPath = this.fromCdn
+				? CDN_BASE_PATH
+				: SCRIPT_LOCAL_IMPORT_PATH;
+
+			initializeTask = this._loadScript(`${importPath}/build/pdf.min.js`)
+				.then(() => this._loadScript(`${importPath}/web/pdf_viewer.js`))
 				.then(() => {
 					return {
 						pdfjsLib: pdfjsLib,
@@ -621,9 +638,9 @@ Polymer({
 		let workerSrc = this.pdfJsWorkerSrc;
 
 		if (!workerSrc) {
-			workerSrc = this.bundled
-				? import.meta.url + '/../node_modules/pdfjs-dist-modules/pdf.worker.min.js'
-				: `${CDN_BASE_PATH}/build/pdf.worker.min.js`;
+			workerSrc = this.fromCdn
+				? `${CDN_BASE_PATH}/build/pdf.worker.min.js`
+				: import.meta.url + '/../node_modules/pdfjs-dist-modules/pdf.worker.min.js';
 		}
 
 		pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
