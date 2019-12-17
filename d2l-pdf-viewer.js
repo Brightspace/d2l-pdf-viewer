@@ -576,7 +576,7 @@ Polymer({
 			scriptTag.onerror = reject;
 			scriptTag.src = src;
 		}).catch(() => {
-			const progressBar = bundledthis.$.progressBar;
+			const progressBar = this.$.progressBar;
 			progressBar.hidden = true;
 
 			this.dispatchEvent(new CustomEvent(
