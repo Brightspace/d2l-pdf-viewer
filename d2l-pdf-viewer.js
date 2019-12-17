@@ -473,8 +473,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer">
 
 document.head.appendChild($_documentContainer.content);
 
-const CDN_BASE_PATH = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943';
-
 /**
  * `<d2l-pdf-viewer>`
  *
@@ -616,7 +614,7 @@ Polymer({
 	},
 	_loadScripts: function() {
 		const basePath = this.useCdn
-			? CDN_BASE_PATH
+			? 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943'
 			: this.pdfjsBasePath || `${import.meta.url}/../node_modules/pdfjs-dist`;
 
 		if (!this._workerSrc) {
