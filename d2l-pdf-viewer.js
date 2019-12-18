@@ -487,7 +487,7 @@ Polymer({
 		'aria-describedby': 'pdfName'
 	},
 	properties: {
-		loaderType: {
+		loader: {
 			type: String,
 			value: 'import'
 		},
@@ -565,8 +565,8 @@ Polymer({
 
 		this._workerSrc = this.pdfJsWorkerSrc;
 
-		// Currently the loaderType implies useCdn, but ideally isn't in the future
-		switch (this.loaderType) {
+		// Currently the loader implies useCdn, but ideally isn't in the future
+		switch (this.loader) {
 			case 'import':
 				initializeTask = this._loadDynamicImports();
 				break;
@@ -574,25 +574,26 @@ Polymer({
 				initializeTask = this._loadScripts();
 				break;
 			default:
-				throw new Error(`unknown loaderType: ${this.loaderType}`);
+				initializeTask = Promise.reject(`unknown loaderType: ${this.loader}`);
 		}
 
 		this._initializeTask = initializeTask
 			.then(this._librariesLoaded.bind(this))
-			.catch(() => {
+			.catch(e => {
 				this.$.progressBar.hidden = true;
 
 				this.dispatchEvent(new CustomEvent(
 					'd2l-pdf-viewer-load-failed', {
 						bubbles: true,
 						composed: true,
+						detail: e
 					},
 				));
 			});
 	},
 	_loadDynamicImports: function() {
 		if (this.useCdn || this.pdfjsBasePath) {
-			throw new Error('loaderType `import` does not have CDN/base path support');
+			return Promise.reject('loaderType `import` does not have CDN/base path support');
 		}
 
 		if (!this._workerSrc) {
@@ -614,7 +615,7 @@ Polymer({
 	},
 	_loadScripts: function() {
 		const basePath = this.useCdn
-			? 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943'
+			? 'https://s.brightspace.com/lib/pdf.js/2.0.943'
 			: this.pdfjsBasePath || `${import.meta.url}/../node_modules/pdfjs-dist`;
 
 		if (!this._workerSrc) {
