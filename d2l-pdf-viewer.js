@@ -473,11 +473,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer">
 
 document.head.appendChild($_documentContainer.content);
 
-const CDN_BASE_PATH = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943';
-const ESM_IMPORT = 'esm';
-const SCRIPT_IMPORT = 'script';
-const SCRIPT_LOCAL_IMPORT_PATH = 'pdfjs-dist';
-
 /**
  * `<d2l-pdf-viewer>`
  *
@@ -492,6 +487,10 @@ Polymer({
 		'aria-describedby': 'pdfName'
 	},
 	properties: {
+		loaderType: {
+			type: String,
+			value: 'import'
+		},
 		minPageScale: {
 			type: Number,
 			value: 0.1
@@ -500,17 +499,14 @@ Polymer({
 			type: Number,
 			value: 5
 		},
+		pdfjsBasePath: String,
 		pdfJsWorkerSrc: {
 			type: String
 		},
 		src: {
 			type: String
 		},
-		importMethod: {
-			type: String,
-			value: ESM_IMPORT
-		},
-		fromCdn: {
+		useCdn: {
 			type: Boolean,
 			value: false
 		},
@@ -565,65 +561,86 @@ Polymer({
 		this._boundListeners = false;
 		this._addedEventListeners = false;
 
-		let initializeTask, importPath;
+		let initializeTask;
 
-		if (this.importMethod === ESM_IMPORT) {
-			// NOTE: cdm esm imports are not supported yet
-			if (this.fromCdn) {
-				initializeTask = Promise.reject();
-				this.dispatchEvent(new CustomEvent(
-					'd2l-pdf-viewer-load-failed',
-					{ bubbles: true, composed: true }
-				));
-			} else {
-				initializeTask = Promise.all([
-					import('pdfjs-dist-modules/pdf.js'),
-					import('pdfjs-dist-modules/pdf_link_service.js'),
-					import('pdfjs-dist-modules/pdf_viewer.js')
-				]).then(([pdfImport, pdfLinkServiceImport, pdfViewerImport]) => {
-					return {
-						pdfjsLib: pdfImport.default,
-						LinkTarget: pdfImport.LinkTarget,
-						PDFLinkService: pdfLinkServiceImport.PDFLinkService,
-						PDFViewer: pdfViewerImport.PDFViewer
-					};
-				});
-			}
-		} else if (this.importMethod === SCRIPT_IMPORT) {
-			importPath = this.fromCdn
-				? CDN_BASE_PATH
-				: SCRIPT_LOCAL_IMPORT_PATH;
+		this._workerSrc = this.pdfJsWorkerSrc;
 
-			initializeTask = this._loadScript(`${importPath}/build/pdf.min.js`)
-				.then(() => this._loadScript(`${importPath}/web/pdf_viewer.js`))
-				.then(() => {
-					return {
-						pdfjsLib: pdfjsLib,
-						LinkTarget: pdfjsLib.LinkTarget,
-						PDFLinkService: pdfjsViewer.PDFLinkService,
-						PDFViewer: pdfjsViewer.PDFViewer,
-					};
-				});
+		// Currently the loaderType implies useCdn, but ideally isn't in the future
+		switch (this.loaderType) {
+			case 'import':
+				initializeTask = this._loadDynamicImports();
+				break;
+			case 'script':
+				initializeTask = this._loadScripts();
+				break;
+			default:
+				throw new Error(`unknown loaderType: ${this.loaderType}`);
 		}
 
 		this._initializeTask = initializeTask
-			.then(this._librariesLoaded.bind(this));
+			.then(this._librariesLoaded.bind(this))
+			.catch(() => {
+				this.$.progressBar.hidden = true;
+
+				this.dispatchEvent(new CustomEvent(
+					'd2l-pdf-viewer-load-failed', {
+						bubbles: true,
+						composed: true,
+					},
+				));
+			});
+	},
+	_loadDynamicImports: function() {
+		if (this.useCdn || this.pdfjsBasePath) {
+			throw new Error('loaderType `import` does not have CDN/base path support');
+		}
+
+		if (!this._workerSrc) {
+			this._workerSrc = `${import.meta.url}/../node_modules/pdfjs-dist-modules/pdf.worker.min.js`;
+		}
+
+		return Promise.all([
+			import('pdfjs-dist-modules/pdf.js'),
+			import('pdfjs-dist-modules/pdf_link_service.js'),
+			import('pdfjs-dist-modules/pdf_viewer.js')
+		]).then(([pdfImport, pdfLinkServiceImport, pdfViewerImport]) => {
+			return {
+				pdfjsLib: pdfImport.default,
+				LinkTarget: pdfImport.LinkTarget,
+				PDFLinkService: pdfLinkServiceImport.PDFLinkService,
+				PDFViewer: pdfViewerImport.PDFViewer
+			};
+		});
+	},
+	_loadScripts: function() {
+		const basePath = this.useCdn
+			? 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943'
+			: this.pdfjsBasePath || `${import.meta.url}/../node_modules/pdfjs-dist`;
+
+		if (!this._workerSrc) {
+			this._workerSrc = `${basePath}/build/pdf.worker.min.js`;
+		}
+
+		return this._loadScript(`${basePath}/build/pdf.min.js`)
+			.then(() => this._loadScript(`${basePath}/web/pdf_viewer.js`))
+			.then(() => {
+				return {
+					pdfjsLib: pdfjsLib,
+					LinkTarget: pdfjsLib.LinkTarget,
+					PDFLinkService: pdfjsViewer.PDFLinkService,
+					PDFViewer: pdfjsViewer.PDFViewer,
+				};
+			});
 	},
 	_loadScript: function(src) {
 		const scriptTag = document.createElement('script');
 		scriptTag.async = false;
 		document.head.appendChild(scriptTag);
+
 		return new Promise((resolve, reject) => {
 			scriptTag.onload = resolve;
 			scriptTag.onerror = reject;
 			scriptTag.src = src;
-		}).catch(() => {
-			this.$.progressBar.hidden = true;
-
-			this.dispatchEvent(new CustomEvent(
-				'd2l-pdf-viewer-load-failed',
-				{ bubbles: true, composed: true }
-			));
 		});
 	},
 	_librariesLoaded: function({
@@ -638,15 +655,7 @@ Polymer({
 		// under Shady DOM
 		this.scopeSubtree(this.$.viewerContainer, true);
 
-		let workerSrc = this.pdfJsWorkerSrc;
-
-		if (!workerSrc) {
-			workerSrc = this.fromCdn
-				? `${CDN_BASE_PATH}/build/pdf.worker.min.js`
-				: import.meta.url + '/../node_modules/pdfjs-dist-modules/pdf.worker.min.js';
-		}
-
-		pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
+		pdfjsLib.GlobalWorkerOptions.workerSrc = this._workerSrc;
 
 		// (Optionally) enable hyperlinks within PDF files.
 		this._pdfLinkService = new PDFLinkService({
