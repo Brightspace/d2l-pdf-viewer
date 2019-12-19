@@ -1,4 +1,4 @@
-/* global pdfjsViewer pdfjsLib */
+/* global pdfjsViewer, pdfjsLib */
 
 import '@polymer/polymer/polymer-legacy.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
@@ -578,7 +578,9 @@ Polymer({
 		}
 
 		this._initializeTask = initializeTask
-			.then(this._librariesLoaded.bind(this))
+			.then(libraries => {
+				return this._onLibrariesLoaded(libraries);
+			})
 			.catch(e => {
 				this.$.progressBar.hidden = true;
 
@@ -626,7 +628,7 @@ Polymer({
 			.then(() => this._loadScript(`${basePath}/web/pdf_viewer.js`))
 			.then(() => {
 				return {
-					pdfjsLib: pdfjsLib,
+					pdfjsLib,
 					LinkTarget: pdfjsLib.LinkTarget,
 					PDFLinkService: pdfjsViewer.PDFLinkService,
 					PDFViewer: pdfjsViewer.PDFViewer,
@@ -644,7 +646,7 @@ Polymer({
 			scriptTag.src = src;
 		});
 	},
-	_librariesLoaded: function({
+	_onLibrariesLoaded: function({
 		pdfjsLib,
 		LinkTarget,
 		PDFViewer,
