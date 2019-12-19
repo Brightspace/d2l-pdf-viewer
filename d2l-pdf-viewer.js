@@ -591,7 +591,7 @@ Polymer({
 						detail: e
 					},
 				))) {
-					console.error(e);
+					console.error(e); //eslint-disable-line
 				}
 			});
 	},
