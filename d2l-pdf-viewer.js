@@ -588,7 +588,8 @@ Polymer({
 					'd2l-pdf-viewer-load-failed', {
 						bubbles: true,
 						composed: true,
-						detail: e
+						detail: e,
+						cancelable: true
 					},
 				))) {
 					console.error(e); //eslint-disable-line
