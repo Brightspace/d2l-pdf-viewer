@@ -326,8 +326,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer">
 				overflow: visible;
 				border: 9px solid transparent;
 				background-clip: content-box;
-				-o-border-image: url('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/images/shadow.png') 9 9 repeat;
-				border-image: url('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/images/shadow.png') 9 9 repeat;
+				-o-border-image: url('https://s.brightspace.com/lib/pdf.js/2.0.943/web/images/shadow.png') 9 9 repeat;
+				border-image: url('https://s.brightspace.com/lib/pdf.js/2.0.943/web/images/shadow.png') 9 9 repeat;
 				background-color: white;
 			}
 
@@ -404,7 +404,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer">
 				top: 0;
 				right: 0;
 				bottom: 0;
-				background: url('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/images/loading-icon.gif') center no-repeat;
+				background: url('https://s.brightspace.com/lib/pdf.js/2.0.943/web/images/loading-icon.gif') center no-repeat;
 			}
 
 			.pdfPresentationMode .pdfViewer {
