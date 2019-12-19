@@ -574,7 +574,7 @@ Polymer({
 				initializeTask = this._loadScripts();
 				break;
 			default:
-				initializeTask = Promise.reject(`unknown loaderType: ${this.loader}`);
+				initializeTask = Promise.reject(`unknown loader: ${this.loader}`);
 		}
 
 		this._initializeTask = initializeTask
@@ -584,18 +584,20 @@ Polymer({
 			.catch(e => {
 				this.$.progressBar.hidden = true;
 
-				this.dispatchEvent(new CustomEvent(
+				if (this.dispatchEvent(new CustomEvent(
 					'd2l-pdf-viewer-load-failed', {
 						bubbles: true,
 						composed: true,
 						detail: e
 					},
-				));
+				))) {
+					console.error(e);
+				}
 			});
 	},
 	_loadDynamicImports: function() {
 		if (this.useCdn || this.pdfjsBasePath) {
-			return Promise.reject('loaderType `import` does not have CDN/base path support');
+			return Promise.reject('loader `import` does not have CDN/base path support');
 		}
 
 		if (!this._workerSrc) {
