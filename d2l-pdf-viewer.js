@@ -606,9 +606,9 @@ Polymer({
 		}
 
 		return Promise.all([
-			import('pdfjs-dist-modules/pdf.js'),
-			import('pdfjs-dist-modules/pdf_link_service.js'),
-			import('pdfjs-dist-modules/pdf_viewer.js')
+			import(/* webpackIgnore: true */ 'pdfjs-dist-modules/pdf.js'),
+			import(/* webpackIgnore: true */ 'pdfjs-dist-modules/pdf_link_service.js'),
+			import(/* webpackIgnore: true */ 'pdfjs-dist-modules/pdf_viewer.js')
 		]).then(([pdfImport, pdfLinkServiceImport, pdfViewerImport]) => {
 			return {
 				pdfjsLib: pdfImport.default,
