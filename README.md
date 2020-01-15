@@ -5,45 +5,32 @@
 
 ## Installation
 
-`d2l-pdf-viewer` can be installed from [Bower][bower-url]:
+`d2l-pdf-viewer` can be installed using npm:
 ```shell
-bower install d2l-pdf-viewer
+npm i --save Brightspace/d2l-pdf-viewer
 ```
 
 ## Usage
 
-Include the [webcomponents.js](http://webcomponents.org/polyfills/) polyfill (for browsers who don't natively support web components), then import `d2l-pdf-viewer.html`:
+Import `d2l-pdf-viewer.js` for side-effects:
+
+```javascript
+import 'd2l-pdf-viewer/d2l-pdf-viewer.js';
+```
 
 ```html
-<head>
-	<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-	<link rel="import" href="bower_components/d2l-pdf-viewer/d2l-pdf-viewer.html">
-</head>
+<!-- Basic example of adding a PDF viewer that uses the Brightspace CDN for dependencies -->
+<d2l-pdf-viewer
+	src="path/to/my.pdf"
+	loader="script"
+	use-cdn
+></d2l-pdf-viewer>
 ```
 
-<!---
+See [the main source file (d2l-pdf-viewer.js)](./d2l-pdf-viewer.js) for documentation of the full public API.
+
 ```
-<custom-element-demo>
-  <template>
-    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="../d2l-typography/d2l-typography.html">
-    <link rel="import" href="d2l-pdf-viewer.html">
-    <custom-style include="d2l-typography">
-      <style is="custom-style" include="d2l-typography"></style>
-    </custom-style>
-    <style>
-      html {
-        font-size: 20px;
-        font-family: 'Lato', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
-      }
-    </style>
-    <next-code-block></next-code-block>
-  </template>
-</custom-element-demo>
-```
--->
-```html
-<d2l-pdf-viewer>My element</d2l-pdf-viewer>
+Note: This component optionally supports loading PDF.js using ES6 modules, which use dynamic imports. To support this in Webpack builds, an explicit opt-out of dynamic module parsing is performed within this component. For more details, see https://webpack.js.org/api/module-methods/#magic-comments
 ```
 
 ## Developing, Testing and Contributing
@@ -79,5 +66,4 @@ To lint AND run local unit tests:
 ```shell
 npm test
 ```
-
 

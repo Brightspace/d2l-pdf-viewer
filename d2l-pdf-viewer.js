@@ -487,25 +487,55 @@ Polymer({
 		'aria-describedby': 'pdfName'
 	},
 	properties: {
+		/**
+		* The method used to load PDF.js.
+		* Options:
+		* 	- import: Uses ES6 dynamic imports to load an ES6 module version
+		*		Note: Consumer must install https://github.com/Brightspace/pdfjs-dist-modules
+		* 	- script: Uses asyncronous scripts to load a standard PDF.js distribution
+		*/
 		loader: {
 			type: String,
 			value: 'import'
 		},
+		/*
+		* The minimum scale that can be set when zooming the page out.
+		*/
 		minPageScale: {
 			type: Number,
 			value: 0.1
 		},
+		/*
+		* The maximum scale that can be set when zooming the page in.
+		*/
 		maxPageScale: {
 			type: Number,
 			value: 5
 		},
+		/*
+		* The path base to use when loading PDF.js source files (eg, a path to a CDN version,
+		* minus file names.)
+		* Note: This is currently only valid when `loader` type is `source`.
+		*/
 		pdfjsBasePath: String,
+		/*
+		* Allows the worker source location to be supplied explicitly. Will be inferred if
+		* unset, and should only be set in specific cases (eg, worker can't be inferred
+		* correctly due to consumer-specific bundling).
+		*/
 		pdfJsWorkerSrc: {
 			type: String
 		},
+		/*
+		* The URI of the PDF to display.
+		*/
 		src: {
 			type: String
 		},
+		/*
+		* A convenience option to load PDF.js source files from the Brightspace CDN.
+		* Currently only valid when `loader` type is `script`.
+		*/
 		useCdn: {
 			type: Boolean,
 			value: false
