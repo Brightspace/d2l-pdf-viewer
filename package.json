@@ -26,7 +26,7 @@
     "fastdom": "^1.0.8",
     "fullscreen-api": "Brightspace/fullscreen-api#semver:^3"
   },
-  "optionalDependencies": {
+  "peerDependencies": {
     "pdfjs-dist-modules": "Brightspace/pdfjs-dist-modules#semver:2.0.943"
   },
   "devDependencies": {
