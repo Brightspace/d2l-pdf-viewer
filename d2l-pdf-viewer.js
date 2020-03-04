@@ -710,12 +710,6 @@ Polymer({
 			externalLinkTarget: LinkTarget.BLANK
 		});
 
-		const options = {
-			container: this.$.viewerContainer,
-			linkService: this._pdfLinkService,
-			useOnlyCssZoom: true, // Use CSS zooming only, as default zoom rendering in (modularized?) pdfjs-dist is buggy
-		};
-
 		if (!DownloadManager) {
 			this.downloadEnabled = false;
 		} else {
