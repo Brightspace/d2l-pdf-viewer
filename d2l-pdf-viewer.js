@@ -720,10 +720,14 @@ Polymer({
 			this.downloadEnabled = false;
 		} else {
 			this._downloadManager = new DownloadManager(false);
-			options.downloadManager = this._downloadManager;
 		}
 
-		this._pdfViewer = new PDFViewer(options);
+		this._pdfViewer = new PDFViewer({
+			container: this.$.viewerContainer,
+			linkService: this._pdfLinkService,
+			useOnlyCssZoom: true, // Use CSS zooming only, as default zoom rendering in (modularized?) pdfjs-dist is buggy
+			...(!!this._downloadManager && { downloadManager: this._downloadManager })
+		});
 
 		this._pdfLinkService.setViewer(this._pdfViewer);
 

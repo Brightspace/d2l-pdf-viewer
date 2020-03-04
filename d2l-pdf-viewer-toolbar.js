@@ -100,25 +100,21 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer-toolbar">
 					</d2l-pdf-viewer-toolbar-button>
 					<template is="dom-if" if="[[downloadEnabled]]">
 						<d2l-pdf-viewer-toolbar-button
-							id="downloadButton"
 							on-tap="_onDownloadButtonTapped"
 							on-keydown="_onToolbarButtonKeyDown"
 							title="[[localize('downloadTitle')]]"
 							icon="d2l-tier1:download"
 							aria-label="[[localize('downloadLabel')]]"
-							disabled="[[!downloadEnabled]]"
 							tabindex="-1">
 						</d2l-pdf-viewer-toolbar-button>
 					</template>
 					<template is="dom-if" if="[[printEnabled]]">
 						<d2l-pdf-viewer-toolbar-button
-							id="printButton"
 							on-tap="_onPrintButtonTapped"
 							on-keydown="_onToolbarButtonKeyDown"
 							title="[[localize('printTitle')]]"
 							icon="d2l-tier1:print"
 							aria-label="[[localize('printLabel')]]"
-							disabled="[[!printEnabled]]"
 							tabindex="-1">
 						</d2l-pdf-viewer-toolbar-button>
 					</template>
