@@ -462,8 +462,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer">
 			max-page-scale="[[maxPageScale]]"
 			fullscreen-available="[[_isFullscreenAvailable]]"
 			is-fullscreen="[[_isFullscreen]]"
-			print-enabled="[[printEnabled]]"
-			download-enabled="[[downloadEnabled]]"
+			enable-print="[[enablePrint]]"
+			enable-download="[[enableDownload]]"
 			show$="[[_showToolbar]]">
 		</d2l-pdf-viewer-toolbar>
 		<div id="viewerContainer">
@@ -542,11 +542,11 @@ Polymer({
 			type: Boolean,
 			value: false
 		},
-		printEnabled: {
+		enablePrint: {
 			type: Boolean,
 			value: false
 		},
-		downloadEnabled: {
+		enableDownload: {
 			type: Boolean,
 			value: false
 		},
@@ -711,7 +711,7 @@ Polymer({
 		});
 
 		if (!DownloadManager) {
-			this.downloadEnabled = false;
+			this.enableDownload = false;
 		} else {
 			this._downloadManager = new DownloadManager(false);
 		}

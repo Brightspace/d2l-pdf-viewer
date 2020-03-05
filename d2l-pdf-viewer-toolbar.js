@@ -98,7 +98,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer-toolbar">
 						disabled="[[_zoomInButtonDisabled(pageScale, maxPageScale)]]"
 						tabindex="-1">
 					</d2l-pdf-viewer-toolbar-button>
-					<template is="dom-if" if="[[downloadEnabled]]">
+					<template is="dom-if" if="[[enableDownload]]">
 						<d2l-pdf-viewer-toolbar-button
 							on-tap="_onDownloadButtonTapped"
 							on-keydown="_onToolbarButtonKeyDown"
@@ -108,7 +108,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer-toolbar">
 							tabindex="-1">
 						</d2l-pdf-viewer-toolbar-button>
 					</template>
-					<template is="dom-if" if="[[printEnabled]]">
+					<template is="dom-if" if="[[enablePrint]]">
 						<d2l-pdf-viewer-toolbar-button
 							on-tap="_onPrintButtonTapped"
 							on-keydown="_onToolbarButtonKeyDown"
@@ -177,11 +177,11 @@ Polymer({
 			type: Number,
 			value: 0
 		},
-		printEnabled: {
+		enablePrint: {
 			type: Boolean,
 			value: false
 		},
-		downloadEnabled: {
+		enableDownload: {
 			type: Boolean,
 			value: false
 		}
