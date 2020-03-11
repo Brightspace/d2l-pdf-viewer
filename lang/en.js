@@ -10,5 +10,9 @@ window.D2L.PolymerBehaviors.PdfViewer.LangTerms.en = {
 	"zoomInLabel": "Zoom In",
 	"zoomInTitle": "Zoom In",
 	"zoomOutLabel": "Zoom Out",
-	"zoomOutTitle": "Zoom Out"
+	"zoomOutTitle": "Zoom Out",
+	"downloadTitle": "Download",
+	"downloadLabel": "Download",
+	"printTitle": "Open new tab for printing",
+	"printLabel": "Open new tab for printing"
 };

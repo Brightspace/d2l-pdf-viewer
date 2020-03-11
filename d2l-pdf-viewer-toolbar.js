@@ -82,7 +82,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer-toolbar">
 						id="zoomOutButton"
 						title="[[localize('zoomOutTitle')]]"
 						icon="d2l-tier1:zoom-out"
-						on-tap="_onZoomOutButtonTapped"
+						on-click="_onZoomOutButtonTapped"
 						on-keydown="_onToolbarButtonKeyDown"
 						aria-label="[[localize('zoomOutLabel')]]"
 						disabled="[[_zoomOutButtonDisabled(pageScale, minPageScale)]]"
@@ -90,7 +90,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer-toolbar">
 					</d2l-pdf-viewer-toolbar-button>
 					<d2l-pdf-viewer-toolbar-button
 						id="zoomInButton"
-						on-tap="_onZoomInButtonTapped"
+						on-click="_onZoomInButtonTapped"
 						on-keydown="_onToolbarButtonKeyDown"
 						title="[[localize('zoomInTitle')]]"
 						icon="d2l-tier1:zoom-in"
@@ -100,7 +100,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer-toolbar">
 					</d2l-pdf-viewer-toolbar-button>
 					<template is="dom-if" if="[[enableDownload]]">
 						<d2l-pdf-viewer-toolbar-button
-							on-tap="_onDownloadButtonTapped"
+							on-click="_onDownloadButtonTapped"
 							on-keydown="_onToolbarButtonKeyDown"
 							title="[[localize('downloadTitle')]]"
 							icon="d2l-tier1:download"
@@ -110,7 +110,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer-toolbar">
 					</template>
 					<template is="dom-if" if="[[enablePrint]]">
 						<d2l-pdf-viewer-toolbar-button
-							on-tap="_onPrintButtonTapped"
+							on-click="_onPrintButtonTapped"
 							on-keydown="_onToolbarButtonKeyDown"
 							title="[[localize('printTitle')]]"
 							icon="d2l-tier1:print"
@@ -121,7 +121,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer-toolbar">
 					<d2l-pdf-viewer-toolbar-button
 						toggle=""
 						id="fullscreenButton"
-						on-tap="_onToggleFullscreenButtonTapped"
+						on-click="_onToggleFullscreenButtonTapped"
 						on-keydown="_onToolbarButtonKeyDown"
 						title="[[localize('presentationModeTitle')]]"
 						icon="[[_getFullscreenIcon(isFullscreen)]]"
