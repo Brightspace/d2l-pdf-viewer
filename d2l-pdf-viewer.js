@@ -463,7 +463,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-pdf-viewer">
 			fullscreen-available="[[_isFullscreenAvailable]]"
 			is-fullscreen="[[_isFullscreen]]"
 			enable-print="[[enablePrint]]"
-			enable-download="[[_enableDownload]]"
+			enable-download="[[_checkDownloadEnabled(enableDownload, _downloadManager)]]"
 			show$="[[_showToolbar]]">
 		</d2l-pdf-viewer-toolbar>
 		<div id="viewerContainer">
@@ -582,10 +582,6 @@ Polymer({
 		_showToolbar: {
 			type: Boolean,
 			computed: '_computeShowToolbar(_isLoaded, _hasRecentInteraction)'
-		},
-		_enableDownload: {
-			type: Boolean,
-			computed: '_checkDownloadEnabled(enableDownload, _downloadManager)'
 		},
 		_downloadManager: Object
 	},
@@ -1039,6 +1035,6 @@ Polymer({
 		this._pdfName = pdfName;
 	},
 	_checkDownloadEnabled(enableDownload, downloadManager) {
-		return downloadManager && enableDownload;
+		return enableDownload && downloadManager;
 	}
 });
