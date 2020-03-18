@@ -20,11 +20,7 @@ import 'd2l-pdf-viewer/d2l-pdf-viewer.js';
 
 ```html
 <!-- Basic example of adding a PDF viewer that uses the Brightspace CDN for dependencies -->
-<d2l-pdf-viewer
-	src="path/to/my.pdf"
-	loader="script"
-	use-cdn
-></d2l-pdf-viewer>
+<d2l-pdf-viewer src="path/to/my.pdf"></d2l-pdf-viewer>
 ```
 
 See [the main source file (d2l-pdf-viewer.js)](./d2l-pdf-viewer.js) for documentation of the full public API.

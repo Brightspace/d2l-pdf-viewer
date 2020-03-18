@@ -489,17 +489,6 @@ Polymer({
 		'aria-describedby': 'pdfName'
 	},
 	properties: {
-		/**
-		* The method used to load PDF.js.
-		* Options:
-		* 	- import: Uses ES6 dynamic imports to load an ES6 module version
-		*		Note: Consumer must install https://github.com/Brightspace/pdfjs-dist-modules
-		* 	- script: Uses asyncronous scripts to load a standard PDF.js distribution
-		*/
-		loader: {
-			type: String,
-			value: 'import'
-		},
 		/*
 		* The minimum scale that can be set when zooming the page out.
 		*/
@@ -533,14 +522,6 @@ Polymer({
 		*/
 		src: {
 			type: String
-		},
-		/*
-		* A convenience option to load PDF.js source files from the Brightspace CDN.
-		* Currently only valid when `loader` type is `script`.
-		*/
-		useCdn: {
-			type: Boolean,
-			value: false
 		},
 		enablePrint: {
 			type: Boolean,
@@ -601,24 +582,9 @@ Polymer({
 	ready: function() {
 		this._boundListeners = false;
 		this._addedEventListeners = false;
-
-		let initializeTask;
-
 		this._workerSrc = this.pdfJsWorkerSrc;
 
-		// Currently the loader implies useCdn, but ideally isn't in the future
-		switch (this.loader) {
-			case 'import':
-				initializeTask = this._loadDynamicImports();
-				break;
-			case 'script':
-				initializeTask = this._loadScripts();
-				break;
-			default:
-				initializeTask = Promise.reject(`unknown loader: ${this.loader}`);
-		}
-
-		this._initializeTask = initializeTask
+		this._initializeTask = this._loadScripts()
 			.then(libraries => {
 				return this._onLibrariesLoaded(libraries);
 			})
@@ -637,32 +603,8 @@ Polymer({
 				}
 			});
 	},
-	_loadDynamicImports: function() {
-		if (this.useCdn || this.pdfjsBasePath) {
-			return Promise.reject('loader `import` does not have CDN/base path support');
-		}
-
-		if (!this._workerSrc) {
-			this._workerSrc = `${import.meta.url}/../node_modules/pdfjs-dist-modules/pdf.worker.min.js`;
-		}
-
-		return Promise.all([
-			import(/* webpackIgnore: true */ 'pdfjs-dist-modules/pdf.js'),
-			import(/* webpackIgnore: true */ 'pdfjs-dist-modules/pdf_link_service.js'),
-			import(/* webpackIgnore: true */ 'pdfjs-dist-modules/pdf_viewer.js')
-		]).then(([pdfImport, pdfLinkServiceImport, pdfViewerImport]) => {
-			return {
-				pdfjsLib: pdfImport.default,
-				LinkTarget: pdfImport.LinkTarget,
-				PDFLinkService: pdfLinkServiceImport.PDFLinkService,
-				PDFViewer: pdfViewerImport.PDFViewer
-			};
-		});
-	},
 	_loadScripts: function() {
-		const basePath = this.useCdn
-			? 'https://s.brightspace.com/lib/pdf.js/2.0.943'
-			: this.pdfjsBasePath || `${import.meta.url}/../node_modules/pdfjs-dist`;
+		const basePath = this.pdfjsBasePath || 'https://s.brightspace.com/lib/pdf.js/2.0.943';
 
 		if (!this._workerSrc) {
 			this._workerSrc = `${basePath}/build/pdf.worker.min.js`;
@@ -718,7 +660,6 @@ Polymer({
 		this._pdfViewer = new PDFViewer({
 			container: this.$.viewerContainer,
 			linkService: this._pdfLinkService,
-			useOnlyCssZoom: true, // Use CSS zooming only, as default zoom rendering in (modularized?) pdfjs-dist is buggy
 			...(!!this._downloadManager && { downloadManager: this._downloadManager })
 		});
 

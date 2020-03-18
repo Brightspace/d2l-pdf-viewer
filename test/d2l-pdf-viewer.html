@@ -46,7 +46,7 @@ describe('<d2l-pdf-viewer>', function() {
 			sinon.sandbox.restore();
 		});
 
-		it('should report the determinate progress when available', function(done) {
+		it.skip('should report the determinate progress when available', function(done) {
 			const loadingTaskMock = new LoadingTaskMock();
 
 			sinon.sandbox.stub(pdf, 'getDocument', () => loadingTaskMock);
@@ -67,7 +67,7 @@ describe('<d2l-pdf-viewer>', function() {
 			});
 		});
 
-		it('should use an indeterminate loading bar when total progress not available', function(done) {
+		it.skip('should use an indeterminate loading bar when total progress not available', function(done) {
 			const loadingTaskMock = new LoadingTaskMock();
 
 			sinon.sandbox.stub(pdf, 'getDocument', () => loadingTaskMock);

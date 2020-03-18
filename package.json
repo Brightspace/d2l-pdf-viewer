@@ -1,20 +1,20 @@
 {
+  "name": "d2l-pdf-viewer",
+  "author": "D2L Corporation",
+  "license": "Apache-2.0",
+  "version": "3.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/Brightspace/d2l-pdf-viewer.git"
   },
-  "name": "d2l-pdf-viewer",
   "scripts": {
     "lint": "npm run lint:wc && npm run lint:js",
     "lint:js": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",
-    "lint:wc": "NODE_OPTIONS=\"--max-old-space-size=3072\" polymer lint -i \"./d2l-*\" \"./test\" \"./demo\"",
+    "lint:wc": "cross-env NODE_OPTIONS=\"--max-old-space-size=3072\" polymer lint -i \"./d2l-*\" \"./test\" \"./demo\"",
     "serve": "polymer serve",
     "test:polymer:local": "polymer test --skip-plugin sauce",
     "test": "npm run lint && npm run test:polymer:local"
   },
-  "author": "D2L Corporation",
-  "license": "Apache-2.0",
-  "version": "2.3.1",
   "main": "d2l-pdf-viewer.js",
   "dependencies": {
     "@polymer/polymer": "^3.0.0",
@@ -26,9 +26,6 @@
     "fastdom": "^1.0.8",
     "fullscreen-api": "Brightspace/fullscreen-api#semver:^3"
   },
-  "peerDependencies": {
-    "pdfjs-dist-modules": "Brightspace/pdfjs-dist-modules#semver:2.0.943"
-  },
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.0.0",
     "@polymer/iron-test-helpers": "^3.0.0",
@@ -36,6 +33,7 @@
     "babel-eslint": "^10.0.1",
     "bower-art-resolver": "^2.0.9",
     "chromedriver": "^2.40.0",
+    "cross-env": "^7.0.2",
     "eslint": "^4.19.1",
     "eslint-config-brightspace": "^0.4.0",
     "eslint-plugin-html": "^4.0.5",
