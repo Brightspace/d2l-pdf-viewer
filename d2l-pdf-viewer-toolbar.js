@@ -192,6 +192,10 @@ Polymer({
 		D2L.PolymerBehaviors.FocusableArrowKeysBehavior
 	],
 
+	listeners: {
+		'dom-change': '_initRovingTabIndex'
+	},
+
 	attached: function() {
 		afterNextRender(this, () => {
 			this._initRovingTabIndex();
