@@ -9,6 +9,8 @@ window.D2L.PolymerBehaviors.PdfViewer.LangTerms.es = {
 	"pageOfPages": "Page {pageNumber} / {pagesCount}",
 	"presentationModeLabel": "Modo presentación",
 	"presentationModeTitle": "Cambiar al modo presentación",
+	"printTitle": "Abrir una nueva pestaña para imprimir",
+	"printLabel": "Abrir una nueva pestaña para imprimir",
 	"zoomInLabel": "Aumentar",
 	"zoomInTitle": "Aumentar",
 	"zoomOutLabel": "Reducir",
