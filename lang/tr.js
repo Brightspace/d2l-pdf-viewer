@@ -4,6 +4,8 @@ window.D2L.PolymerBehaviors.PdfViewer = window.D2L.PolymerBehaviors.PdfViewer ||
 window.D2L.PolymerBehaviors.PdfViewer.LangTerms = window.D2L.PolymerBehaviors.PdfViewer.LangTerms || {};
 
 window.D2L.PolymerBehaviors.PdfViewer.LangTerms.tr = {
+	"downloadTitle": "İndir",
+	"downloadLabel": "İndir",
 	"pageOfPages": "Page {pageNumber} / {pagesCount}",
 	"presentationModeLabel": "Sunum Modu",
 	"presentationModeTitle": "Sunum moduna geç",

@@ -4,6 +4,8 @@ window.D2L.PolymerBehaviors.PdfViewer = window.D2L.PolymerBehaviors.PdfViewer ||
 window.D2L.PolymerBehaviors.PdfViewer.LangTerms = window.D2L.PolymerBehaviors.PdfViewer.LangTerms || {};
 
 window.D2L.PolymerBehaviors.PdfViewer.LangTerms.ja = {
+	"downloadTitle": "ダウンロード",
+	"downloadLabel": "ダウンロード",
 	"pageOfPages": "Page {pageNumber} / {pagesCount}",
 	"presentationModeLabel": "プレゼンテーションモード",
 	"presentationModeTitle": "プレゼンテーションモードに切り替えます",

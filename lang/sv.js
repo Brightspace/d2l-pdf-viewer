@@ -4,6 +4,8 @@ window.D2L.PolymerBehaviors.PdfViewer = window.D2L.PolymerBehaviors.PdfViewer ||
 window.D2L.PolymerBehaviors.PdfViewer.LangTerms = window.D2L.PolymerBehaviors.PdfViewer.LangTerms || {};
 
 window.D2L.PolymerBehaviors.PdfViewer.LangTerms.sv = {
+	"downloadTitle": "Ladda ned",
+	"downloadLabel": "Ladda ned",
 	"pageOfPages": "Page {pageNumber} / {pagesCount}",
 	"presentationModeLabel": "Presentationsläge",
 	"presentationModeTitle": "Byt till presentationsläge",

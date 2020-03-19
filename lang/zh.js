@@ -4,6 +4,8 @@ window.D2L.PolymerBehaviors.PdfViewer = window.D2L.PolymerBehaviors.PdfViewer ||
 window.D2L.PolymerBehaviors.PdfViewer.LangTerms = window.D2L.PolymerBehaviors.PdfViewer.LangTerms || {};
 
 window.D2L.PolymerBehaviors.PdfViewer.LangTerms.zh = {
+	"downloadTitle": "下载",
+	"downloadLabel": "下载",
 	"pageOfPages": "Page {pageNumber} / {pagesCount}",
 	"presentationModeLabel": "演示模式",
 	"presentationModeTitle": "切换到演示模式",
