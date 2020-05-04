@@ -59,4 +59,4 @@ To lint AND run local unit tests:
 npm test
 ```
 
-If you are adding new langterms, be sure to `npm run build` and commit the changes to `localize-behaviour.js`
+If you are adding new langterms or updating existing translations, be sure to `npm run build:lang` and commit the changes to `localize-behavior.js`

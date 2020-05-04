@@ -1,8 +1,8 @@
 /* eslint-disable */
-const locales = require('./locales.json');
+const locales = require('require-dir')('./lang');
 
 module.exports = function(plop) {
-	plop.setPartial('locales', JSON.stringify(locales));
+	plop.setPartial('locales', JSON.stringify(locales, null, 4));
 
 	plop.setGenerator('localize', {
 		description: 'localize behavior',
