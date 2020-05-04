@@ -14,4 +14,4 @@ module.exports = function(plop) {
 			force: true
 		}]
 	});
-}
+};
