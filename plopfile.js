@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-env node */
 const locales = require('require-dir')('./lang');
 
 module.exports = function(plop) {
