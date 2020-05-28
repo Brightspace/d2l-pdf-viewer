@@ -1,11 +1,13 @@
 {
-	"downloadTitle": "下載",
-	"downloadLabel": "下載",
-	"pageOfPages": "Page {pageNumber} / {pagesCount}",
-	"presentationModeLabel": "簡報模式",
-	"presentationModeTitle": "切換至簡報模式",
-	"zoomInLabel": "放大",
-	"zoomInTitle": "放大",
-	"zoomOutLabel": "縮小",
-	"zoomOutTitle": "縮小"
+   "downloadLabel" : "下載",
+   "downloadTitle" : "下載",
+   "pageOfPages" : "第 {pageNumber} 頁/ 共 {pagesCount} 頁",
+   "presentationModeLabel" : "簡報模式",
+   "presentationModeTitle" : "切換至簡報模式",
+   "printLabel" : "開啟新頁籤以供列印",
+   "printTitle" : "開啟新頁籤以供列印",
+   "zoomInLabel" : "放大",
+   "zoomInTitle" : "放大",
+   "zoomOutLabel" : "縮小",
+   "zoomOutTitle" : "縮小"
 }

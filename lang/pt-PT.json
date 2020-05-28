@@ -1,0 +1,13 @@
+{
+   "downloadLabel" : "Baixar",
+   "downloadTitle" : "Baixar",
+   "pageOfPages" : "Página {pageNumber} de {pagesCount}",
+   "presentationModeLabel" : "Modo de Apresentação",
+   "presentationModeTitle" : "Alternar para Modo de Apresentação",
+   "printLabel" : "Abrir nova guia para impressão",
+   "printTitle" : "Abrir nova guia para impressão",
+   "zoomInLabel" : "Ampliar",
+   "zoomInTitle" : "Ampliar",
+   "zoomOutLabel" : "Reduzir",
+   "zoomOutTitle" : "Reduzir"
+}

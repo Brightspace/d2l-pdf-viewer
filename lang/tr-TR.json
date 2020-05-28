@@ -1,0 +1,13 @@
+{
+   "downloadLabel" : "İndir",
+   "downloadTitle" : "İndir",
+   "pageOfPages" : "Sayfa {pageNumber} / {pagesCount}",
+   "presentationModeLabel" : "Sunum Modu",
+   "presentationModeTitle" : "Sunum Moduna Geç",
+   "printLabel" : "Yazdırma için yeni sekme aç",
+   "printTitle" : "Yazdırma için yeni sekme aç",
+   "zoomInLabel" : "Yakınlaştır",
+   "zoomInTitle" : "Yakınlaştır",
+   "zoomOutLabel" : "Uzaklaştır",
+   "zoomOutTitle" : "Uzaklaştır"
+}

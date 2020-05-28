@@ -1,0 +1,13 @@
+{
+   "downloadLabel" : "다운로드",
+   "downloadTitle" : "다운로드",
+   "pageOfPages" : "{pageNumber}/{pagesCount}페이지",
+   "presentationModeLabel" : "프레젠테이션 모드",
+   "presentationModeTitle" : "프레젠테이션 모드로 전환",
+   "printLabel" : "인쇄를 위해 새 탭 열기",
+   "printTitle" : "인쇄를 위해 새 탭 열기",
+   "zoomInLabel" : "확대",
+   "zoomInTitle" : "확대",
+   "zoomOutLabel" : "축소",
+   "zoomOutTitle" : "축소"
+}

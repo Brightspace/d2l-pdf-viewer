@@ -1,0 +1,13 @@
+{
+   "downloadLabel" : "Ladda ned",
+   "downloadTitle" : "Ladda ned",
+   "pageOfPages" : "Sida {pageNumber}/{pagesCount}",
+   "presentationModeLabel" : "Presentationsläge",
+   "presentationModeTitle" : "Växla till presentationsläge",
+   "printLabel" : "Öppna ny flik för utskrift",
+   "printTitle" : "Öppna ny flik för utskrift",
+   "zoomInLabel" : "Zooma in",
+   "zoomInTitle" : "Zooma in",
+   "zoomOutLabel" : "Zooma ut",
+   "zoomOutTitle" : "Zooma ut"
+}

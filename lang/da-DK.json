@@ -1,0 +1,13 @@
+{
+   "downloadLabel" : "Download",
+   "downloadTitle" : "Download",
+   "pageOfPages" : "Side {pageNumber} / {pagesCount}",
+   "presentationModeLabel" : "Præsentationstilstand",
+   "presentationModeTitle" : "Skift til præsentationstilstand",
+   "printLabel" : "Åbn ny fane for at udskrive",
+   "printTitle" : "Åbn ny fane for at udskrive",
+   "zoomInLabel" : "Zoom ind",
+   "zoomInTitle" : "Zoom ind",
+   "zoomOutLabel" : "Zoom ud",
+   "zoomOutTitle" : "Zoom ud"
+}

@@ -1,0 +1,13 @@
+{
+   "downloadLabel" : "ダウンロード",
+   "downloadTitle" : "ダウンロード",
+   "pageOfPages" : "{pageNumber} / {pagesCount} ページ",
+   "presentationModeLabel" : "プレゼンテーションモード",
+   "presentationModeTitle" : "プレゼンテーションモードへの切り替え",
+   "printLabel" : "印刷用に新しいタブを開く",
+   "printTitle" : "印刷用に新しいタブを開く",
+   "zoomInLabel" : "ズームイン",
+   "zoomInTitle" : "ズームイン",
+   "zoomOutLabel" : "ズームアウト",
+   "zoomOutTitle" : "ズームアウト"
+}

@@ -1,0 +1,13 @@
+{
+   "downloadLabel" : "下载",
+   "downloadTitle" : "下载",
+   "pageOfPages" : "第 {pageNumber} / {pagesCount} 页",
+   "presentationModeLabel" : "演示模式",
+   "presentationModeTitle" : "切换到演示模式",
+   "printLabel" : "打开新选项卡进行打印",
+   "printTitle" : "打开新选项卡进行打印",
+   "zoomInLabel" : "放大",
+   "zoomInTitle" : "放大",
+   "zoomOutLabel" : "缩小",
+   "zoomOutTitle" : "缩小"
+}
