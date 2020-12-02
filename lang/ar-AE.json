@@ -1,0 +1,13 @@
+{
+   "downloadLabel" : "تنزيل",
+   "downloadTitle" : "تنزيل",
+   "pageOfPages" : "الصفحة {pageNumber} / {pagesCount}",
+   "presentationModeLabel" : "وضع العرض التقديمي",
+   "presentationModeTitle" : "التبديل إلى الوضع العرض التقديمي",
+   "printLabel" : "فتح علامة تبويب جديدة للطباعة",
+   "printTitle" : "فتح علامة تبويب جديدة للطباعة",
+   "zoomInLabel" : "تكبير",
+   "zoomInTitle" : "تكبير",
+   "zoomOutLabel" : "تصغير",
+   "zoomOutTitle" : "تصغير"
+}

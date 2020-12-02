@@ -1,0 +1,13 @@
+{
+   "downloadLabel" : "Télécharger",
+   "downloadTitle" : "Télécharger",
+   "pageOfPages" : "Page {pageNumber} / {pagesCount}",
+   "presentationModeLabel" : "Mode présentation",
+   "presentationModeTitle" : "Passer en Mode présentation",
+   "printLabel" : "Ouvrir un nouvel onglet pour l’impression",
+   "printTitle" : "Ouvrir un nouvel onglet pour l’impression",
+   "zoomInLabel" : "Zoomer vers gros plan",
+   "zoomInTitle" : "Zoomer vers gros plan",
+   "zoomOutLabel" : "Zoomer vers plan général",
+   "zoomOutTitle" : "Zoomer vers plan général"
+}

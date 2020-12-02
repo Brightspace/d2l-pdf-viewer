@@ -1,0 +1,13 @@
+{
+   "downloadLabel" : "Downloaden",
+   "downloadTitle" : "Downloaden",
+   "pageOfPages" : "Pagina {pageNumber} / {pagesCount}",
+   "presentationModeLabel" : "Presentatiemodus",
+   "presentationModeTitle" : "Wisselen naar presentatiemodus",
+   "printLabel" : "Open nieuw tabblad voor printen",
+   "printTitle" : "Open nieuw tabblad voor printen",
+   "zoomInLabel" : "Inzoomen",
+   "zoomInTitle" : "Inzoomen",
+   "zoomOutLabel" : "Uitzoomen",
+   "zoomOutTitle" : "Uitzoomen"
+}
